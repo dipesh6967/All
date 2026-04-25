@@ -121,6 +121,14 @@
         echo "noVNC already exists, skipping clone."
       fi
 
+      # Windows-specific boot parameters\n\
+BOOT_ORDER="-boot order=c,menu=on"\n\
+if [ ! -s "/data/disk.qcow2" ] || [ $(stat -c%s "/data/disk.qcow2") -lt 1048576 ]; then\n\
+  echo "🚀 First boot - installing Windows from ISO"\n\
+  BOOT_ORDER="-boot order=d,menu=on"\n\
+fi\n\
+\n\
+
       # =========================
       # Start QEMU (KVM + VirtIO + UEFI)
       # =========================
