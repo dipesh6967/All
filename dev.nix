@@ -67,25 +67,18 @@
        echo "OVMF_VARS.fd already exists, skipping download."
      fi
 
-      mkdir -p "$VM_DIR"i
+      mkdir -p "$VM_DIR"
 
-      # =========================
-      # Handle QCOW2 Disk (Download or Create 100GB)
-      # =========================
       if [ "$SKIP_QCOW2_DOWNLOAD" -ne 1 ]; then
-        if [ ! -f "$RAW_DISK" ]; then
-          echo "Downloading pre-made QCOW2 disk..."
-          wget -O "$RAW_DISK" https://bit.ly/45hceMn
-        fi
-      fi
-
-      # Integrated from your second code: Create 100GB disk if it doesn't exist
-      if [ ! -f "$RAW_DISK" ]; then
-        echo "💽 Creating 100GB virtual disk..."
-        qemu-img create -f qcow2 "$RAW_DISK" 100G
-      else
-        echo "Disk image already exists, skipping creation."
-      fi
+  if [ ! -f "$RAW_DISK" ]; then
+    echo "Downloading QCOW2 disk..."
+    wget -O "$RAW_DISK" https://bit.ly/45hceMn
+  else
+    echo "QCOW2 disk already exists, skipping download."
+  fi
+else
+  echo "SKIP_QCOW2_DOWNLOAD=1 → QCOW2 logic skipped."
+fi
       
 
       # =========================
@@ -119,6 +112,16 @@
         git clone https://github.com/novnc/noVNC.git "$NOVNC_DIR"
       else
         echo "noVNC already exists, skipping clone."
+      fi
+
+      # =========================
+      # Create QCOW2 disk if missing
+      # =========================
+      if [ ! -f "$RAW_DISK" ]; then
+        echo "Creating QCOW2 disk..."
+        qemu-img create -f qcow2 "$RAW_DISK" 11G
+      else
+        echo "QCOW2 disk already exists, skipping creation."
       fi
 
       # =========================
