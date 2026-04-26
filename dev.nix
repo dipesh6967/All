@@ -123,10 +123,10 @@
       nohup qemu-system-x86_64 \
         -enable-kvm \
         -cpu host,+topoext,hv_relaxed,hv_spinlocks=0x1fff,hv-passthrough,+pae,+nx,kvm=on,+svm \
-        -smp 6,cores=6 \
+        -smp 4,cores=4 \
         -M q35,usb=on \
         -device usb-tablet \
-        -m 16384 \
+        -m 24,576 \
         -device virtio-balloon-pci \
         -vga virtio \
         -net nic,netdev=n0,model=virtio-net-pci \
